@@ -1,0 +1,19 @@
+segmentation_models_3D
+numpy
+matplotlib
+nibabel
+pandas 
+dvc
+notebook
+numpy
+python-box==6.0.2
+pyYAML
+tqdm
+ensure==1.0.2
+joblib
+types-PyYAML
+scikit-learn
+django
+scipy
+seaborn
+-e .
