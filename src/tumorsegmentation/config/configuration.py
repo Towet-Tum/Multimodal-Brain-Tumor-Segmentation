@@ -1,6 +1,8 @@
+import os
 from tumorsegmentation.constants import *
 from tumorsegmentation.utils.common import read_yaml, create_directories
-from tumorsegmentation.entity.config_entity import DataIngestionConfig
+from tumorsegmentation.entity.config_entity import DataIngestionConfig, DataPreprocessingConfig
+
 
 
 class ConfigurationManager:
@@ -29,3 +31,20 @@ class ConfigurationManager:
         )
 
         return data_ingestion_config
+    
+    def get_data_preprocessing_config(self) -> DataPreprocessingConfig:
+        config = self.config.data_preprocessing
+        create_directories([config.root_dir])
+        create_directories([config.img_dir, config.mask_dir, config.splited_dataset])
+
+        dataset = os.path.join("artifacts", "data_ingestion", "raw_dataset", "BraTS20Dataset", "BraTS2020_TrainingData", "MICCAI_BraTS2020_TrainingData")
+        
+        data_preprocessing_config = DataPreprocessingConfig(
+            root_dir=config.root_dir,
+            img_dir=config.img_dir,
+            mask_dir=config.mask_dir,
+            dataset=Path(dataset),
+            splited_dataset=config.splited_dataset,
+            
+        )
+        return data_preprocessing_config

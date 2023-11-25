@@ -8,3 +8,13 @@ class DataIngestionConfig:
     train_URL: str
     val_URL: str
     unzip_dir: Path
+
+
+@dataclass(frozen=True)
+class DataPreprocessingConfig:
+    root_dir: Path
+    img_dir : Path 
+    mask_dir : Path 
+    dataset : Path 
+    splited_dataset : Path
+    
