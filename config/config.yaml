@@ -1,0 +1,19 @@
+artifacts_root: artifacts
+
+
+data_ingestion:
+  root_dir: artifacts/data_ingestion
+  train_URL: "https://www.cbica.upenn.edu/MICCAI_BraTS2020_TrainingData.zip"
+  val_URL: "https://www.cbica.upenn.edu/MICCAI_BraTS2020_ValidationData.zip"
+  local_filename: artifacts/data_ingestion/data.zip
+  unzip_dir: artifacts/data_ingestion/raw_dataset
+
+data_preprocessing:
+  root_dir : artifacts/preprocessed_data
+  img_dir : artifacts/preprocessed_data/dataset/images
+  mask_dir : artifacts/preprocessed_data/dataset/masks
+  splited_dataset : artifacts/preprocessed_data/train_val_dataset
+
+training:
+  root_dir: artifacts/training
+  trained_model_path: artifacts/training/model.h5
