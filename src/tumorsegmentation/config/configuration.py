@@ -1,7 +1,9 @@
 import os
 from tumorsegmentation.constants import *
 from tumorsegmentation.utils.common import read_yaml, create_directories
-from tumorsegmentation.entity.config_entity import DataIngestionConfig, DataPreprocessingConfig
+from tumorsegmentation.entity.config_entity import (DataIngestionConfig, 
+                                                    DataPreprocessingConfig,
+                                                    TrainingConfig)
 
 
 
@@ -48,3 +50,42 @@ class ConfigurationManager:
             
         )
         return data_preprocessing_config
+    
+
+    def get_training_config(self) -> TrainingConfig:
+        training = self.config.training
+        processed_data = self.config.data_preprocessing
+        params = self.params
+        create_directories([
+            Path(training.root_dir)
+        ])
+        train_img_dir = os.path.join("artifacts", "preprocessed_data", "train_val_dataset", "train", "images/")
+        train_mask_dir = os.path.join("artifacts", "preprocessed_data", "train_val_dataset", "train", "masks/")
+        val_img_dir = os.path.join("artifacts", "preprocessed_data", "train_val_dataset", "val", "images/")
+        val_mask_dir = os.path.join("artifacts", "preprocessed_data", "train_val_dataset", "val", "masks/")
+
+        training_config = TrainingConfig(
+            root_dir=Path(training.root_dir),
+            trained_model_path=Path(training.trained_model_path),
+            
+            
+            train_img_dir = str(train_img_dir),
+            train_mask_dir = str(train_mask_dir),
+            val_img_dir = str(val_img_dir), 
+            val_mask_dir = str(val_mask_dir), 
+
+            epochs=params.epochs,
+            num_classes=params.num_classes,
+            IMG_CHANNELS=params.IMG_CHANNELS,
+            IMG_DEPTH=params.IMG_DEPTH,
+            IMG_HEIGHT=params.IMG_HEIGHT,
+            IMG_WIDTH=params.IMG_WIDTH,
+            
+            wt= params.wt,
+            LR = params.LR,
+            optim = params.optim,
+            batch_size = params.batch_size,
+            
+        )
+
+        return training_config
