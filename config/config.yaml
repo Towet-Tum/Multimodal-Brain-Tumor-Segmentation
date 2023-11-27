@@ -14,6 +14,10 @@ data_preprocessing:
   mask_dir : artifacts/preprocessed_data/dataset/masks
   splited_dataset : artifacts/preprocessed_data/train_val_dataset
 
+  test_img_dir : artifacts/preprocessed_data/evaluation_data/images
+  
+
+
 training:
   root_dir: artifacts/training
   trained_model_path: artifacts/training/model.h5

@@ -15,6 +15,7 @@ class DataPreprocessingPipeline:
         data_preprocessing = DataPreprocessing(config=data_preprocessing_config)
         data_preprocessing.train_data_preprocessing()
         data_preprocessing.train_val_split()
+        data_preprocessing.test_data_preprocessing()
 
 
 if __name__ == "__main__":

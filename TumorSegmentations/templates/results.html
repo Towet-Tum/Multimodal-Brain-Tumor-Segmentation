@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Segmentation Result</title>
+
+
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #maskDisplay {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        #controls {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        #prevBtn, #nextBtn {
+            padding: 10px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="uploads">
+       
+<form  method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+  Select image to upload:
+  <input type="file" name="pic" id="fileToUpload">
+  <input type="submit" value="Upload Image" name="submit">
+</form>
+
+  {% if images %}
+    <div id="maskDisplay"></div>
+    <div id="controls">
+        <button id="prevBtn" onclick="showPrevMask()">Previous</button>
+        <button id="nextBtn" onclick="showNextMask()">Next</button>
+    </div>
+
+    <script>
+        var masks = {{ images|safe }};
+        var currentIndex = 0;
+
+        function showMask(index) {
+            var maskDisplay = document.getElementById("maskDisplay");
+            maskDisplay.innerHTML = "<img src='" + masks[index] + "' alt='Mask " + index + "'>";
+        }
+
+        function showPrevMask() {
+            if (currentIndex > 0) {
+                currentIndex--;
+            }
+            showMask(currentIndex);
+        }
+
+        function showNextMask() {
+            if (currentIndex < masks.length - 1) {
+                currentIndex++;
+            }
+            showMask(currentIndex);
+        }
+
+        // Initial display
+        showMask(currentIndex);
+    </script>
+{% else %}
+    <p>No images available.</p>
+{% endif %}
+      
+   
+</body>
+</html>

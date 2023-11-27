@@ -57,6 +57,37 @@ class DataPreprocessing:
 
             else:
                 print("I am useless")
+
+
+        def test_data_preprocessing(self):
+            self.t2_list = sorted(glob.glob(f"{self.config.evaluation_dataset}/*/*t2.nii"))
+            self.t1ce_list = sorted(glob.glob(f"{self.config.evaluation_dataset}/*/*t1ce.nii"))
+            self.flair_list = sorted(glob.glob(f"{self.config.evaluation_dataset}/*/*flair.nii"))
+           
+            scaler = MinMaxScaler()
+
+    
+            for img in range(len(self.t2_list)):   #Using t1_list as all lists are of same size
+                print("Now preparing image and masks number: ", img)
+
+                temp_image_t2=nib.load(self.t2_list[img]).get_fdata()
+                temp_image_t2=scaler.fit_transform(temp_image_t2.reshape(-1, temp_image_t2.shape[-1])).reshape(temp_image_t2.shape)
+
+                temp_image_t1ce=nib.load(self.t1ce_list[img]).get_fdata()
+                temp_image_t1ce=scaler.fit_transform(temp_image_t1ce.reshape(-1, temp_image_t1ce.shape[-1])).reshape(temp_image_t1ce.shape)
+
+                temp_image_flair=nib.load(self.flair_list[img]).get_fdata()
+                temp_image_flair=scaler.fit_transform(temp_image_flair.reshape(-1, temp_image_flair.shape[-1])).reshape(temp_image_flair.shape)
+
+                
+
+
+                temp_combined_images = np.stack([temp_image_flair, temp_image_t1ce, temp_image_t2], axis=3)
+
+                #Crop to a size to be divisible by 64 so we can later extract 64x64x64 patches.
+                #cropping x, y, and z
+                temp_combined_images=temp_combined_images[56:184, 56:184, 13:141]
+                np.save(f"{self.config.test_img_dir}/image_"+str(img)+'.npy', temp_combined_images)
         
 
     def train_val_split(self):

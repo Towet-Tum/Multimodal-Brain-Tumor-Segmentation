@@ -3,7 +3,12 @@ from tumorsegmentation.constants import *
 from tumorsegmentation.utils.common import read_yaml, create_directories
 from tumorsegmentation.entity.config_entity import (DataIngestionConfig, 
                                                     DataPreprocessingConfig,
-                                                    TrainingConfig)
+
+                                                    
+
+                                                    TrainingConfig,
+                                                    EvaluationConfig)
+
 
 
 
@@ -40,13 +45,15 @@ class ConfigurationManager:
         create_directories([config.img_dir, config.mask_dir, config.splited_dataset])
 
         dataset = os.path.join("artifacts", "data_ingestion", "raw_dataset", "BraTS20Dataset", "BraTS2020_TrainingData", "MICCAI_BraTS2020_TrainingData")
-        
+        evaluation_dataset =  os.path.join("artifacts", "data_ingestion", "raw_dataset", "BraTS20Dataset", "BraTS2020_ValidationData", "MICCAI_BraTS2020_TrainingData")
         data_preprocessing_config = DataPreprocessingConfig(
             root_dir=config.root_dir,
             img_dir=config.img_dir,
             mask_dir=config.mask_dir,
             dataset=Path(dataset),
             splited_dataset=config.splited_dataset,
+            evaluation_dataset = Path(evaluation_dataset),
+            test_img_dir = self.config.test_img_dir,
             
         )
         return data_preprocessing_config
@@ -88,4 +95,26 @@ class ConfigurationManager:
             
         )
 
+
         return training_config
+
+    def get_validation_config(self) -> EvaluationConfig:
+
+        val_img_dir = os.path.join("artifacts", "preprocessed_data", "train_val_dataset", "val", "images/")
+        val_mask_dir = os.path.join("artifacts", "preprocessed_data", "train_val_dataset", "val", "masks/")
+        path_of_model = os.path.join("artifacts", "training", "brats_2020.hdf5")
+        batch_size = 8
+
+
+
+        eval_config = EvaluationConfig(
+            path_of_model=Path(path_of_model),
+            batch_size=int(batch_size),
+            val_img_dir=str(val_img_dir),
+            val_mask_dir=str(val_mask_dir),
+            num_classes=self.params.num_classes,
+            
+            
+        )
+        return eval_config
+

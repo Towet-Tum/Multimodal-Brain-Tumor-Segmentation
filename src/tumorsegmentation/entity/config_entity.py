@@ -17,6 +17,9 @@ class DataPreprocessingConfig:
     mask_dir : Path 
     dataset : Path 
     splited_dataset : Path
+    evalution_dataset : Path
+    test_img_dir : Path
+    
 
 
 @dataclass(frozen=True)
@@ -37,4 +40,11 @@ class TrainingConfig:
     LR : float
     optim : str 
     batch_size : int
-    
+
+@dataclass(frozen=True)
+class EvaluationConfig:
+    path_of_model: Path
+    val_img_dir: Path
+    val_mask_dir: Path
+    batch_size: int
+    num_classes: int
